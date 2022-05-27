@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
@@ -34,12 +35,11 @@ export class CommentService {
     const comment = this.comments.find((comment) => comment.id === id);
 
     if (!comment) {
-      throw new Error(`Comentário ${id} não encontrado`);
+      throw new EntityNotFoundError(`Comentário ${id} não encontrado`);
     }
 
     return comment;
   }
-
   update(id: number, updateCommentDto: UpdateCommentDto) {
     const comment = this.findOne(id);
 
