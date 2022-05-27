@@ -3,9 +3,17 @@ import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
+import { IComment } from './comment.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CommentService {
+  constructor(
+    @InjectModel('Comment')
+    private commentModel: Model<IComment>,
+  ) {}
+
   private comments: CommentEntity[] = [
     {
       id: 1,
@@ -27,8 +35,8 @@ export class CommentService {
     return newComment;
   }
 
-  findAll() {
-    return this.comments;
+  async findAll() {
+    return await this.commentModel.find();
   }
 
   findOne(id: number) {
