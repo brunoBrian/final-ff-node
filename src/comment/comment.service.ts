@@ -46,18 +46,17 @@ export class CommentService {
     }
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    // const comment = this.findOne(id);
-    // const index = this.comments.indexOf(comment);
-    // const newComment = {
-    //   ...comment,
-    //   ...updateCommentDto,
-    // };
-    // this.comments[index] = newComment;
-    // return newComment;
+  async update(id: string, updateCommentDto: UpdateCommentDto) {
+    await this.findOne(id);
+
+    await this.commentModel.findOneAndUpdate({ _id: id }, updateCommentDto);
+
+    const updatedComment = await this.findOne(id);
+
+    return updatedComment;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     // const comment = this.findOne(id);
     // const index = this.comments.indexOf(comment);
     // this.comments.splice(index, 1);
