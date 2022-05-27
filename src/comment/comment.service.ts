@@ -31,11 +31,9 @@ export class CommentService {
   }
 
   findOne(id: number) {
-    const comment = this.comments.filter((comment) => comment.id === id);
+    const comment = this.comments.find((comment) => comment.id === id);
 
-    if (!comment.length) {
-      console.log('kjbdd');
-
+    if (!comment) {
       throw new Error(`Comentário ${id} não encontrado`);
     }
 
@@ -43,7 +41,18 @@ export class CommentService {
   }
 
   update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+    const comment = this.findOne(id);
+
+    const index = this.comments.indexOf(comment);
+
+    const newComment = {
+      ...comment,
+      ...updateCommentDto,
+    };
+
+    this.comments[index] = newComment;
+
+    return newComment;
   }
 
   remove(id: number) {
