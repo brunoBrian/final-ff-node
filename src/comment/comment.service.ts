@@ -56,6 +56,10 @@ export class CommentService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} comment`;
+    const comment = this.findOne(id);
+
+    const index = this.comments.indexOf(comment);
+
+    this.comments.splice(index, 1);
   }
 }
