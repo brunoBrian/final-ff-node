@@ -36,36 +36,31 @@ export class CommentService {
     return comments.map((comment: IComment) => formatComment(comment));
   }
 
-  findOne(id: number) {
-    const comment = this.comments.find((comment) => comment.id === id);
+  async findOne(id: string) {
+    try {
+      const comment = await this.commentModel.findById(id);
 
-    if (!comment) {
+      return comment;
+    } catch (err) {
       throw new EntityNotFoundError(`Comentário ${id} não encontrado`);
     }
-
-    return comment;
   }
+
   update(id: number, updateCommentDto: UpdateCommentDto) {
-    const comment = this.findOne(id);
-
-    const index = this.comments.indexOf(comment);
-
-    const newComment = {
-      ...comment,
-      ...updateCommentDto,
-    };
-
-    this.comments[index] = newComment;
-
-    return newComment;
+    // const comment = this.findOne(id);
+    // const index = this.comments.indexOf(comment);
+    // const newComment = {
+    //   ...comment,
+    //   ...updateCommentDto,
+    // };
+    // this.comments[index] = newComment;
+    // return newComment;
   }
 
   remove(id: number) {
-    const comment = this.findOne(id);
-
-    const index = this.comments.indexOf(comment);
-
-    this.comments.splice(index, 1);
+    // const comment = this.findOne(id);
+    // const index = this.comments.indexOf(comment);
+    // this.comments.splice(index, 1);
   }
 }
 
