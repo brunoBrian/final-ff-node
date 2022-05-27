@@ -40,7 +40,11 @@ export class CommentService {
     try {
       const comment = await this.commentModel.findById(id);
 
-      return comment;
+      if (!comment) {
+        throw new EntityNotFoundError(`Comentário ${id} não encontrado`);
+      }
+
+      return formatComment(comment);
     } catch (err) {
       throw new EntityNotFoundError(`Comentário ${id} não encontrado`);
     }
@@ -53,13 +57,13 @@ export class CommentService {
 
     const updatedComment = await this.findOne(id);
 
-    return updatedComment;
+    return formatComment(updatedComment);
   }
 
-  remove(id: string) {
-    // const comment = this.findOne(id);
-    // const index = this.comments.indexOf(comment);
-    // this.comments.splice(index, 1);
+  async remove(id: string) {
+    await this.findOne(id);
+
+    await this.commentModel.findByIdAndDelete(id);
   }
 }
 
