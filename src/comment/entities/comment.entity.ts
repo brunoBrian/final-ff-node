@@ -1,5 +1,5 @@
 export class CommentEntity {
-  id: string;
+  id: number;
   user_id: string;
   comment: string;
 }

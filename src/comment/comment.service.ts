@@ -5,20 +5,29 @@ import { CommentEntity } from './entities/comment.entity';
 
 @Injectable()
 export class CommentService {
-  private comment: CommentEntity[] = [
+  private comments: CommentEntity[] = [
     {
-      id: '123',
+      id: 1,
       comment: 'Some comment',
       user_id: '1',
     },
   ];
 
   create(createCommentDto: CreateCommentDto) {
-    return 'This action adds a new comment';
+    const lastId = this.comments[this.comments.length - 1].id;
+
+    const newComment = {
+      id: lastId + 1,
+      ...createCommentDto,
+    };
+
+    this.comments.push(newComment);
+
+    return newComment;
   }
 
   findAll() {
-    return this.comment;
+    return this.comments;
   }
 
   findOne(id: number) {
