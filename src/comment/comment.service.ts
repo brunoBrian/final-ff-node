@@ -27,11 +27,13 @@ export class CommentService {
 
     const savedComment = await newComment.save();
 
-    return savedComment;
+    return formatComment(savedComment);
   }
 
   async findAll() {
-    return await this.commentModel.find();
+    const comments = await this.commentModel.find();
+
+    return comments.map((comment: IComment) => formatComment(comment));
   }
 
   findOne(id: number) {
@@ -66,3 +68,9 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 }
+
+const formatComment = (comment: IComment) => ({
+  id: comment.id,
+  comment: comment.comment,
+  user_id: comment.user_id,
+});
