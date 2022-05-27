@@ -22,17 +22,12 @@ export class CommentService {
     },
   ];
 
-  create(createCommentDto: CreateCommentDto) {
-    const lastId = this.comments[this.comments.length - 1]?.id || 0;
+  async create(createCommentDto: CreateCommentDto) {
+    const newComment = new this.commentModel(createCommentDto);
 
-    const newComment = {
-      id: lastId + 1,
-      ...createCommentDto,
-    };
+    const savedComment = await newComment.save();
 
-    this.comments.push(newComment);
-
-    return newComment;
+    return savedComment;
   }
 
   async findAll() {
