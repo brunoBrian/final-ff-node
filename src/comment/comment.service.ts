@@ -31,7 +31,15 @@ export class CommentService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} comment`;
+    const comment = this.comments.filter((comment) => comment.id === id);
+
+    if (!comment.length) {
+      console.log('kjbdd');
+
+      throw new Error(`Comentário ${id} não encontrado`);
+    }
+
+    return comment;
   }
 
   update(id: number, updateCommentDto: UpdateCommentDto) {
