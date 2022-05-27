@@ -14,7 +14,7 @@ export class CommentService {
   ];
 
   create(createCommentDto: CreateCommentDto) {
-    const lastId = this.comments[this.comments.length - 1].id;
+    const lastId = this.comments[this.comments.length - 1]?.id || 0;
 
     const newComment = {
       id: lastId + 1,
