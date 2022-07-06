@@ -1,0 +1,105 @@
+name: Ame Digital GitHub Actions
+on:
+  push:
+    branches:
+    - main
+    - master
+    - develop
+    - homolog
+  pull_request:
+    branches:
+    - main
+    - master
+    - develop
+    - homolog
+jobs:
+  EXEC_CYBERSECURITY_SCA:
+    name: Cybersecurity / SCA
+    uses: AmeDigital/ame-github-actions/.github/workflows/sca-actions.yml@master
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      USER_PACKAGE_DEPLOY: ${{ secrets.USER_PACKAGE_DEPLOY }}
+      TOKEN_PACKAGE_DEPLOY: ${{ secrets.TOKEN_PACKAGE_DEPLOY }}
+    with:
+      SNYK_SCA_CHECK: false
+      SNYK_DEBUG: false
+      SNYK_FAIL_ON: upgradable
+      SNYK_THRESHOLD_SCA: high
+      SNYK_SUB_PROJECT: --all-sub-projects
+      SNYK_ORG: tribe-core
+      MAVEN_APP: false
+      GRADLE_APP: false
+      NODE_APP: false
+      PYTHON_APP: false
+      PHP_APP: false
+      NODE_BUILD_VERSION: 0
+      RUN_NPM_INSTALL: false
+      RUN_YARN_INSTALL: false
+  EXEC_CYBERSECURITY_SAST:
+    name: Cybersecurity / SAST
+    uses: AmeDigital/ame-github-actions/.github/workflows/sast-actions.yml@master
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    with:
+      SNYK_CODE_CHECK: false
+      SNYK_DEBUG: false
+      SNYK_ORG: tribe-core
+      SNYK_THRESHOLD_CODE: high
+  EXEC_CYBERSECURITY_IAC:
+    name: Cybersecurity / IaC
+    uses: AmeDigital/ame-github-actions/.github/workflows/iac-actions.yml@master
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    with:
+      SNYK_IAC_CHECK: false
+      SNYK_DEBUG: false
+      SNYK_FAIL_ON: upgradable
+      SNYK_THRESHOLD_IAC: high
+      SNYK_SUB_PROJECT: --all-sub-projects
+      SNYK_ORG: tribe-core
+      CHECKOV_CHECK: true
+      PRISMA_CLOUD_CODE_SECURITY_CHECK: false
+  EXEC_CYBERSECURITY_SECRET_SCAN:
+    name: Cybersecurity / Secret
+    uses: AmeDigital/ame-github-actions/.github/workflows/secret-scan-actions.yml@master
+    with:
+      GITLEAKS_CHECK: true
+      SEMGREP_CHECK: true
+      SEMGREP_RULES: p/secrets p/ci
+  EXEC_CYBERSECURITY_CONTAINER:
+    name: Cybersecurity / Container
+    uses: AmeDigital/ame-github-actions/.github/workflows/container-actions.yml@master
+  EXEC_CYBERSECURITY_FIM:
+    name: Cybersecurity / FIM
+    uses: AmeDigital/ame-github-actions/.github/workflows/fim-actions.yml@master
+    with:
+      GRADLE_INTEGRITY_CHECK: false
+  EXEC_CORE_CODE_QUALITY:
+    name: Core / Code Quality
+    uses: AmeDigital/ame-github-actions/.github/workflows/code-quality-actions.yml@master
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+      USER_PACKAGE_DEPLOY: ${{ secrets.USER_PACKAGE_DEPLOY }}
+      TOKEN_PACKAGE_DEPLOY: ${{ secrets.TOKEN_PACKAGE_DEPLOY }}
+    with:
+      SONARCLOUD_CHECK: false
+      MAVEN_APP: false
+      GRADLE_APP: false
+      JAVA_BUILD_VERSION: 0
+  EXEC_DEVELOPER_ACTIONS:
+    name: Developer / App
+    uses: AmeDigital/ame-github-actions/.github/workflows/developer-actions.yml@master
+    secrets:
+      USER_PACKAGE_DEPLOY: ${{ secrets.USER_PACKAGE_DEPLOY }}
+      TOKEN_PACKAGE_DEPLOY: ${{ secrets.TOKEN_PACKAGE_DEPLOY }}
+    with:
+      BUILD_ENABLE: false
+      MAVEN_APP: false
+      GRADLE_APP: false
+      NODE_APP: false
+      PYTHON_APP: false
+      PHP_APP: false
+      NODE_BUILD_VERSION: 0
+      RUN_NPM_BUILD: false
+      RUN_YARN_BUILD: false
+      JAVA_BUILD_VERSION: 0
