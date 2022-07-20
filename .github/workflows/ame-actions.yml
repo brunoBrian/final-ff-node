@@ -21,19 +21,20 @@ jobs:
       USER_PACKAGE_DEPLOY: ${{ secrets.USER_PACKAGE_DEPLOY }}
       TOKEN_PACKAGE_DEPLOY: ${{ secrets.TOKEN_PACKAGE_DEPLOY }}
     with:
-      SNYK_SCA_CHECK: false
+      SNYK_SCA_CHECK: true
       SNYK_DEBUG: false
       SNYK_FAIL_ON: upgradable
       SNYK_THRESHOLD_SCA: high
-      SNYK_SUB_PROJECT: --all-sub-projects
+      SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
+      SNYK_SUB_PROJECT: --all-projects
       SNYK_ORG: tribe-core
       MAVEN_APP: false
       GRADLE_APP: false
-      NODE_APP: false
+      NODE_APP: true
       PYTHON_APP: false
       PHP_APP: false
-      NODE_BUILD_VERSION: 0
-      RUN_NPM_INSTALL: false
+      NODE_BUILD_VERSION: 16
+      RUN_NPM_INSTALL: true
       RUN_YARN_INSTALL: false
   EXEC_CYBERSECURITY_SAST:
     name: Cybersecurity / SAST
@@ -41,7 +42,7 @@ jobs:
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     with:
-      SNYK_CODE_CHECK: false
+      SNYK_CODE_CHECK: true
       SNYK_DEBUG: false
       SNYK_ORG: tribe-core
       SNYK_THRESHOLD_CODE: high
@@ -55,6 +56,7 @@ jobs:
       SNYK_DEBUG: false
       SNYK_FAIL_ON: upgradable
       SNYK_THRESHOLD_IAC: high
+      SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
       SNYK_SUB_PROJECT: --all-sub-projects
       SNYK_ORG: tribe-core
       CHECKOV_CHECK: true
@@ -96,10 +98,10 @@ jobs:
       BUILD_ENABLE: false
       MAVEN_APP: false
       GRADLE_APP: false
-      NODE_APP: false
+      NODE_APP: true
       PYTHON_APP: false
       PHP_APP: false
-      NODE_BUILD_VERSION: 0
-      RUN_NPM_BUILD: false
+      NODE_BUILD_VERSION: 16
+      RUN_NPM_BUILD: true
       RUN_YARN_BUILD: false
       JAVA_BUILD_VERSION: 0
