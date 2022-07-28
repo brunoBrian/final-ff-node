@@ -9,7 +9,7 @@ export class CreateCommentDto extends CommentEntity {
     example: '12345',
   })
   @IsString()
-  user_id: string;
+  card_id: string;
 
   @ApiProperty({
     description: 'Comentário',

@@ -18,7 +18,7 @@ export class CommentService {
     {
       id: 1,
       comment: 'Some comment',
-      user_id: '1',
+      card_id: '1',
     },
   ];
 
@@ -70,5 +70,5 @@ export class CommentService {
 const formatComment = (comment: IComment) => ({
   id: comment.id,
   comment: comment.comment,
-  user_id: comment.user_id,
+  card_id: comment.card_id,
 });

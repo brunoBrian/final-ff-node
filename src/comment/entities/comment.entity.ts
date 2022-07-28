@@ -1,5 +1,5 @@
 export class CommentEntity {
   id: number;
-  user_id: string;
+  card_id: string;
   comment: string;
 }
