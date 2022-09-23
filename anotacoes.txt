@@ -3,3 +3,21 @@ yarn-lock - armazenar a versão exata de cada uma das dependências instaladas, 
 DTOS - padroniza qual deve ser o body daquelas requisições
 
 Entity - Representa os dados persistidos no banco de dados​
+
+Modulos - separados em dominios da aplicação (cometarios, usuarios, etc)
+
+Controller - só é responsavel com lidar com protocolo http (defiir o path do edpoint, metodos http)
+
+principio da responsabilidade unica, onde separa as responsabilidades
+Service - {
+    regra de negocio
+    isola do controlador responsabilidade que nao é dele
+    controlador nao quer saber como vai ser manipulado o array, só quer que retorne algo para mostrar
+}
+
+injecao de dependencia - {
+    possibilita instaciar objetos sem precisar do new
+    o nest injeta o operador new debaixo dos panos pra gente, a gente nao precisa se preocupar com o que a classe recebe, a gente só precisa da instancia pra usar seus métodos 
+
+    tira o controle do controlador de instanciar o service e saber sobre ele e passa o controle para o nest
+}

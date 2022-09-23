@@ -11,8 +11,14 @@ import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
+import { HttpService } from '@nestjs/axios';
+
 @Controller('comment')
 export class CommentController {
+  // private commentService = new CommentService(HttpService as any);
+
+  // Quando criar o construtor da classe, passa por debaixo dos panos o parametro commentService do tipo CommentService
+  // parametro commentService é innjetado nessa classe
   constructor(private readonly commentService: CommentService) {}
 
   @Post()
@@ -39,4 +45,9 @@ export class CommentController {
   remove(@Param('id') id: string) {
     return this.commentService.remove(+id);
   }
+
+  // @Get('user/:id')
+  // findByUserId(@Param('id') id: string) {
+  //   return this.commentService.findByUserId(id);
+  // }
 }

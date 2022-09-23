@@ -16,7 +16,8 @@ export class CommentService {
     },
   ];
 
-  constructor(private readonly httpService: HttpService) {}
+  // só pode ser acessada pela classe
+  constructor(private httpService: HttpService) {}
 
   async create(createCommentDto: CreateCommentDto) {
     try {
@@ -54,6 +55,7 @@ export class CommentService {
 
     return comment;
   }
+
   update(id: number, updateCommentDto: UpdateCommentDto) {
     const comment = this.findOne(id);
 
@@ -76,4 +78,14 @@ export class CommentService {
 
     this.comments.splice(index, 1);
   }
+
+  // findByUserId(id: string) {
+  //   const comment = this.comments.filter((comment) => comment.user_id === id);
+
+  //   if (!comment) {
+  //     throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+  //   }
+
+  //   return comment;
+  // }
 }
