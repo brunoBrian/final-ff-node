@@ -1,0 +1,5 @@
+yarn-lock - armazenar a versão exata de cada uma das dependências instaladas, como se fosse um cache
+
+DTOS - padroniza qual deve ser o body daquelas requisições
+
+Entity - Representa os dados persistidos no banco de dados​

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class CommentService {
@@ -14,17 +16,29 @@ export class CommentService {
     },
   ];
 
-  create(createCommentDto: CreateCommentDto) {
-    const lastId = this.comments[this.comments.length - 1]?.id || 0;
+  constructor(private readonly httpService: HttpService) {}
 
-    const newComment = {
-      id: lastId + 1,
-      ...createCommentDto,
-    };
+  async create(createCommentDto: CreateCommentDto) {
+    try {
+      await firstValueFrom(
+        this.httpService.get(
+          `https://api.github.com/users/${createCommentDto.user_id}`,
+        ),
+      );
 
-    this.comments.push(newComment);
+      const lastId = this.comments[this.comments.length - 1]?.id || 0;
 
-    return newComment;
+      const newComment = {
+        id: lastId + 1,
+        ...createCommentDto,
+      };
+
+      this.comments.push(newComment);
+
+      return newComment;
+    } catch (err) {
+      throw new EntityNotFoundError('Card não encontrado');
+    }
   }
 
   findAll() {
