@@ -65,6 +65,24 @@ export class CommentService {
 
     await this.commentModel.findByIdAndDelete(id);
   }
+
+  // async findByUserId(id: string) {
+  //   try {
+  //     const comments = await this.commentModel.find({ user_id: id });
+
+  //     if (!comments) {
+  //       throw new EntityNotFoundError(
+  //         `Comentário do usuario ${id} não encontrado`,
+  //       );
+  //     }
+
+  //     return comments.map((comment: IComment) => formatComment(comment));
+  //   } catch (err) {
+  //     throw new EntityNotFoundError(
+  //       `Comentário do usuario ${id} não encontrado`,
+  //     );
+  //   }
+  // }
 }
 
 const formatComment = (comment: IComment) => ({

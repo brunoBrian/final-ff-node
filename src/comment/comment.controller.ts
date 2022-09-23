@@ -39,4 +39,9 @@ export class CommentController {
   remove(@Param('id') id: string) {
     return this.commentService.remove(id);
   }
+
+  // @Get('user/:id')
+  // findByUserId(@Param('id') id: string) {
+  //   return this.commentService.findByUserId(id);
+  // }
 }
