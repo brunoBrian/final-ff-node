@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { CommentEntity } from './entities/comment.entity';
 import { IComment } from './comment.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,14 +12,6 @@ export class CommentService {
     @InjectModel('Comment')
     private commentModel: Model<IComment>,
   ) {}
-
-  private comments: CommentEntity[] = [
-    {
-      id: 1,
-      comment: 'Some comment',
-      user_id: '1',
-    },
-  ];
 
   async create(createCommentDto: CreateCommentDto) {
     const newComment = new this.commentModel(createCommentDto);
