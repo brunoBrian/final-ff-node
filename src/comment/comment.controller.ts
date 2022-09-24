@@ -6,12 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-
-import { HttpService } from '@nestjs/axios';
 
 @Controller('comment')
 export class CommentController {
@@ -42,6 +42,7 @@ export class CommentController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
     return this.commentService.remove(+id);
   }
