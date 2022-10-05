@@ -5,6 +5,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
 import { firstValueFrom } from 'rxjs';
+import { UserEntity } from 'src/user/user.entity';
 
 @Injectable()
 export class CommentService {
@@ -15,6 +16,15 @@ export class CommentService {
       user_id: '1',
     },
   ];
+
+  private users: UserEntity[] = [
+    {
+      id: '1',
+      name: 'Joe',
+      age: 25,
+      country: 'Canadá'
+    }
+  ]
 
   // só pode ser acessada pela classe
   constructor(private httpService: HttpService) {}
@@ -79,13 +89,17 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 
-  // findByUserId(id: string) {
-  //   const comment = this.comments.filter((comment) => comment.user_id === id);
-
-  //   if (!comment) {
-  //     throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
-  //   }
-
-  //   return comment;
-  // }
+  findCommentsByUserId(id: string) {
+    const user = this.users.find((user) => user.id === id)
+    if(user){
+      const comment = this.comments.filter((comment) => comment.user_id === user.id);
+      if (!comment) {
+        throw new EntityNotFoundError(`Comentários não encontrados para o id ${id}`);
+      }
+      return comment;
+    }
+    else{
+      throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+    }
+   }
 }
