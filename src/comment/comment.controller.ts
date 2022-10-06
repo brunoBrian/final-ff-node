@@ -26,24 +26,24 @@ export class CommentController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.commentService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.commentService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
+  async update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
+    return this.commentService.update(id, updateCommentDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.commentService.remove(id);
   }
 
   @Get('user/:id')

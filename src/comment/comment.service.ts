@@ -4,76 +4,87 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
 import { UserService } from 'src/user/user.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { IComment } from './comment.schema';
+
 
 @Injectable()
 export class CommentService {
-  private comments: CommentEntity[] = [
-    {
-      id: 1,
-      comment: 'Some comment',
-      user_id: '1',
-    },
-  ];
-
-  // só pode ser acessada pela classe
-  constructor(private readonly userService: UserService) { }
+  constructor(
+    @InjectModel('Comment')
+    private commentModel: Model<IComment>,
+    private readonly userService: UserService
+  ) { }
 
   async create(createCommentDto: CreateCommentDto) {
     await this.userService.findOne(createCommentDto.user_id);
 
-    const lastId = this.comments[this.comments.length - 1]?.id || 0;
+    const newComment = new this.commentModel(createCommentDto);
 
-    const newComment = {
-      id: lastId + 1,
-      ...createCommentDto,
-    };
+    const savedComment = await newComment.save();
 
-    this.comments.push(newComment);
-
-    return newComment;
+    return formatComment(savedComment);
   }
 
-  findAll() {
-    return this.comments;
+  async findAll() {
+    const comments = await this.commentModel.find();
+
+    return comments.map((comment: IComment) => formatComment(comment));
   }
 
-  findOne(id: number) {
-    const comment = this.comments.find((comment) => comment.id === id);
+  async findOne(id: string) {
+    try {
+      const comment = await this.commentModel.findById(id);
 
-    if (!comment) {
+      if (!comment) {
+        throw new EntityNotFoundError(`Comentário ${id} não encontrado`);
+      }
+
+      return formatComment(comment);
+    } catch (err) {
       throw new EntityNotFoundError(`Comentário ${id} não encontrado`);
     }
-
-    return comment;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    const comment = this.findOne(id);
+  async update(id: string, updateCommentDto: UpdateCommentDto) {
+    await this.findOne(id);
 
-    const index = this.comments.indexOf(comment);
+    await this.commentModel.findOneAndUpdate({ _id: id }, updateCommentDto);
 
-    const newComment = {
-      ...comment,
-      ...updateCommentDto,
-    };
+    const updatedComment = await this.findOne(id);
 
-    this.comments[index] = newComment;
-
-    return newComment;
+    return formatComment(updatedComment);
   }
 
-  remove(id: number) {
-    const comment = this.findOne(id);
+  async remove(id: string) {
+    await this.findOne(id);
 
-    const index = this.comments.indexOf(comment);
-
-    this.comments.splice(index, 1);
+    await this.commentModel.findByIdAndDelete(id);
   }
 
   async findByUserId(id: string) {
     await this.userService.findOne(id);
+    try {
+      const comments = await this.commentModel.find({ user_id: id });
 
-    const comment = this.comments.filter((comment) => comment.user_id === id);
-    return comment;
+      if (!comments || !comments.length) {
+        throw new EntityNotFoundError(
+          `Comentário do usuario ${id} não encontrado`,
+        );
+      }
+
+      return comments.map((comment: IComment) => formatComment(comment));
+    } catch (err) {
+      throw new EntityNotFoundError(
+        `Comentário do usuario ${id} não encontrado`,
+      );
+    }
   }
 }
+
+const formatComment = (comment: IComment) => ({
+  id: comment.id,
+  comment: comment.comment,
+  user_id: comment.user_id,
+});
