@@ -23,7 +23,7 @@ export class CommentService {
     try {
       await firstValueFrom(
         this.httpService.get(
-          `https://api.github.com/users/${createCommentDto.user_id}`,
+          `http://localhost:3000/user/${createCommentDto.user_id}`,
         ),
       );
 
@@ -38,7 +38,7 @@ export class CommentService {
 
       return newComment;
     } catch (err) {
-      throw new EntityNotFoundError('Card não encontrado');
+      throw new EntityNotFoundError('Usuário não encontrado');
     }
   }
 
