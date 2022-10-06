@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CommentController } from './comment.controller';
-import { HttpModule } from '@nestjs/axios';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    UserModule
+  ],
   controllers: [CommentController],
   providers: [CommentService],
 })

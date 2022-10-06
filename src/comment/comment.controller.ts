@@ -15,14 +15,13 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comment')
 export class CommentController {
-  // private commentService = new CommentService(HttpService as any);
 
   // Quando criar o construtor da classe, passa por debaixo dos panos o parametro commentService do tipo CommentService
   // parametro commentService é innjetado nessa classe
-  constructor(private readonly commentService: CommentService) {}
+  constructor(private readonly commentService: CommentService) { }
 
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
+  async create(@Body() createCommentDto: CreateCommentDto) {
     return this.commentService.create(createCommentDto);
   }
 
@@ -47,8 +46,8 @@ export class CommentController {
     return this.commentService.remove(+id);
   }
 
-  // @Get('user/:id')
-  // findByUserId(@Param('id') id: string) {
-  //   return this.commentService.findByUserId(id);
-  // }
+  @Get('user/:id')
+  async findByUserId(@Param('id') id: string) {
+    return this.commentService.findByUserId(id);
+  }
 }
