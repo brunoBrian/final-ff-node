@@ -72,13 +72,8 @@ export class CommentService {
 
   async findByUserId(id: string) {
     await this.userService.findOne(id);
-    
+
     const comment = this.comments.filter((comment) => comment.user_id === id);
-
-    if (!comment) {
-      throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
-    }
-
     return comment;
   }
 }
