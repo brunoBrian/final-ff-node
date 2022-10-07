@@ -20,18 +20,18 @@ export class UserController{
 
     @Get(':id')
     findOne(@Param('id') id: string){
-        return this.userService.findOne(+id);
+        return this.userService.findOne(id);
     }
 
     @Patch(':id')
     update(@Param('id') id:string, @Body() UpdateUserDto: UpdateUserDto){
-        return this.userService.update(+id, UpdateUserDto);
+        return this.userService.update(id, UpdateUserDto);
     }
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(@Param('id') id: string){
-        return this.userService.remove(+id);
+        return this.userService.remove(id);
     }
 
 }

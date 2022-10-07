@@ -1,74 +1,69 @@
-import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 import { EntityNotFoundError } from "src/utils/errors/EntityNotFoundError";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { UserEntity } from "./entities/user.entity";
+import { IUser } from "./user.schema";
 
 @Injectable()
 export class UserService {
 
-    private users: UserEntity[] = [
-        {
-            id: 1,
-            name: 'Rosana',          
-        }
-    ];
-
-    constructor(private httpService: HttpService) {}
+    constructor(
+        @InjectModel('User') 
+        private userModel: Model<IUser>
+    ) {}
 
     async create(createUserDto: CreateUserDto) {
         try {
             
-            const lastId = this.users[this.users.length - 1]?.id || 0;
+            const newUser = new this.userModel(createUserDto);
+            const savedUser = await newUser.save();
 
-            const newUser = {
-                id: lastId + 1,
-                ...createUserDto,
-            };
-
-            this.users.push(newUser);
-
-            return newUser;
+            return formatUser(savedUser);
 
         } catch (err) {
             throw new EntityNotFoundError(`Erro ao criar usuário ${createUserDto.name}`)
         }
     }
 
-    findAll(){
-        return this.users;
+    async findAll(){
+        const users = await this.userModel.find();
+        return users.map((user: IUser) => formatUser(user));
     }
 
-    findOne(id: number){
-        const user = this.users.find((user) => user.id === id);
-        
-        if (user){
-            return user;            
-        }     
-        throw new EntityNotFoundError(`Usuário ${id} não encontrado`);        
+    async findOne(id: string){
+        try {
+            const user = await this.userModel.findById(id);
+            
+            if (user){
+                return formatUser(user);            
+            }     
+            throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+
+        } catch(err) {
+            throw new EntityNotFoundError(`Usuário ${id} não encontrado`); 
+        }  
     }
 
-    update(id: number, updateUserDto: UpdateUserDto) {
-        const user = this.findOne(id);
+    async update(id: string, updateUserDto: UpdateUserDto) {
+        await this.findOne(id);
 
-        const index = this.users.indexOf(user);
+        await this.userModel.findOneAndUpdate({ _id: id}, updateUserDto);
 
-        const newUser = {
-            ...user,
-            ...updateUserDto,
-        }
+        const updatedUser = await this.findOne(id);
 
-        this.users[index] = newUser;
-
-        return newUser;
+        return formatUser(updatedUser);
     }
 
-    remove(id: number) {
-        const user = this.findOne(id);
-        const index = this.users.indexOf(user);
-
-        this.users.splice(index, 1);
+    async remove(id: string) {
+        await this.findOne(id);
+        await this.userModel.findByIdAndDelete(id);
     }
 
 }
+
+const formatUser = (user: IUser) => ({
+    id: user.id,
+    name: user.name,
+})
