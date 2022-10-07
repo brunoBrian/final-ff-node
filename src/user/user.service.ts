@@ -19,15 +19,15 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  async findOne(user_id: string) {
+  async findOne(id: string) {
     try {
       await firstValueFrom(
         this.httpService.get(
-          `https://api.github.com/users/${user_id}`,
+          `https://api.github.com/users/${id}`,
         ),
       );
     } catch (err) {
-      throw new EntityNotFoundError('Card não encontrado');
+      throw new EntityNotFoundError(`User #${id} não encontrado`);
     }
   }
 
