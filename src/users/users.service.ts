@@ -12,7 +12,7 @@ export class UsersService {
       id: 1,
       name: "suelly",
       age: 40,
-      profession: "developer",
+      profession: "Developer",
       city: "Recife",
       comments: [],
     },
