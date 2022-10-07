@@ -12,7 +12,7 @@ export class CommentService {
     {
       id: 1,
       comment: 'Some comment',
-      user_id: '1',
+      user_id: 1,
     },
   ];
 
@@ -26,7 +26,7 @@ export class CommentService {
           `https://api.github.com/users/${createCommentDto.user_id}`,
         ),
       );
-
+    
       const lastId = this.comments[this.comments.length - 1]?.id || 0;
 
       const newComment = {
@@ -79,13 +79,13 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 
-  // findByUserId(id: string) {
-  //   const comment = this.comments.filter((comment) => comment.user_id === id);
+   findByUserId(id: number) {
+     const comment = this.comments.filter((comment) => comment.user_id === id);
 
-  //   if (!comment) {
-  //     throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
-  //   }
+   if (!comment) {
+       throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+     }
 
-  //   return comment;
-  // }
+     return comment;
+   }
 }

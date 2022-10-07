@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { UserEntity } from '../entities/user.entity';
 
 export class CreateUserDto extends UserEntity {
@@ -8,7 +8,7 @@ export class CreateUserDto extends UserEntity {
   @IsString()
   lastname: string;
 
-  @IsString()
+  @IsNumber()
   age: number;
 
   @IsString()
