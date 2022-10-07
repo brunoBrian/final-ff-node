@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -47,8 +48,8 @@ export class CommentController {
     return this.commentService.remove(+id);
   }
 
-  // @Get('user/:id')
-  // findByUserId(@Param('id') id: string) {
-  //   return this.commentService.findByUserId(id);
-  // }
+  @Get('user/:id')
+  findByUserId(@Param('id') id: string) {
+    return this.commentService.findByUserId(id);
+  }
 }
