@@ -5,6 +5,8 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
 import { firstValueFrom } from 'rxjs';
+import { UserEntity } from 'src/user/user.entity';
+import { CreateUSer } from 'src/user/create-user';
 
 @Injectable()
 export class CommentService {
@@ -12,9 +14,18 @@ export class CommentService {
     {
       id: 1,
       comment: 'Some comment',
-      user_id: '1',
+      user_id: 1,
     },
   ];
+
+  private users: UserEntity[] = [
+    {
+      id: 1,
+      name: 'Joe',
+      age: 25,
+      country: 'Canadá'
+    }
+  ]
 
   // só pode ser acessada pela classe
   constructor(private httpService: HttpService) {}
@@ -39,6 +50,29 @@ export class CommentService {
       return newComment;
     } catch (err) {
       throw new EntityNotFoundError('Card não encontrado');
+    }
+  }
+
+  async createUSer(createUser: CreateUSer){
+    try {
+      await firstValueFrom(
+        this.httpService.get(
+          `https://api.github.com/users/${createUser.id}`,
+        ),
+      );
+
+      const lastId = this.users[this.users.length - 1]?.id || 0;
+
+      const newUser = {
+        id: lastId + 1,
+        ...createUser,
+      };
+
+      this.users.push(newUser);
+
+      return newUser;
+    } catch (err) {
+      throw new EntityNotFoundError('User não cadastrado');
     }
   }
 
@@ -79,13 +113,17 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 
-  // findByUserId(id: string) {
-  //   const comment = this.comments.filter((comment) => comment.user_id === id);
-
-  //   if (!comment) {
-  //     throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
-  //   }
-
-  //   return comment;
-  // }
+  findCommentsByUserId(id: number) {
+    const user = this.users.find((user) => user.id === id)
+    if(user){
+      const comment = this.comments.filter((comment) => comment.user_id === user.id);
+      if (!comment) {
+        throw new EntityNotFoundError(`Comentários não encontrados para o id ${id}`);
+      }
+      return comment;
+    }
+    else{
+      throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+    }
+   }
 }
