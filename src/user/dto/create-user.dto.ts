@@ -1,37 +1,29 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNumber } from "class-validator";
 import { UserEntity } from "../entities/user.entity";
 
 export class CreateUserDto extends UserEntity {
 
     @IsString()
-    @IsNotEmpty()
     name: string;
 
     @IsString()
-    @IsNotEmpty()
     description: string;
 
     @IsString()
-    @IsNotEmpty()
     imageUrl: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsNumber()
     strength: number;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsNumber()
     speed: number;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsNumber()
     skill: number;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsNumber()
     gear: number;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsNumber()
     intellect: number;
 }
