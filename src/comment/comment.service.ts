@@ -1,18 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
-import { CommentEntity } from './entities/comment.entity';
-import { firstValueFrom } from 'rxjs';
+import { HttpService } from "@nestjs/axios";
+import { Injectable } from "@nestjs/common";
+import { firstValueFrom } from "rxjs";
+import { EntityNotFoundError } from "src/utils/errors/EntityNotFoundError";
+import { CreateCommentDto } from "./dto/create-comment.dto";
+import { UpdateCommentDto } from "./dto/update-comment.dto";
+import { CommentEntity } from "./entities/comment.entity";
 
 @Injectable()
 export class CommentService {
   private comments: CommentEntity[] = [
     {
       id: 1,
-      comment: 'Some comment',
-      user_id: '1',
+      comment: "Some comment",
+      user_id: "1",
+    },
+    {
+      id: 2,
+      comment: "Some comment 2",
+      user_id: "1",
+    },
+    {
+      id: 3,
+      comment: "Some comment 2",
+      user_id: "2",
     },
   ];
 
@@ -23,8 +33,8 @@ export class CommentService {
     try {
       await firstValueFrom(
         this.httpService.get(
-          `https://api.github.com/users/${createCommentDto.user_id}`,
-        ),
+          `https://api.github.com/users/${createCommentDto.user_id}`
+        )
       );
 
       const lastId = this.comments[this.comments.length - 1]?.id || 0;
@@ -38,7 +48,7 @@ export class CommentService {
 
       return newComment;
     } catch (err) {
-      throw new EntityNotFoundError('Card não encontrado');
+      throw new EntityNotFoundError("Card não encontrado");
     }
   }
 
@@ -79,13 +89,13 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 
-  // findByUserId(id: string) {
-  //   const comment = this.comments.filter((comment) => comment.user_id === id);
+  findByUserId(id: string) {
+    const comment = this.comments.filter((comment) => comment.user_id === id);
 
-  //   if (!comment) {
-  //     throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
-  //   }
+    if (!comment) {
+      throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+    }
 
-  //   return comment;
-  // }
+    return comment;
+  }
 }
