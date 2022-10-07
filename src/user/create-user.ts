@@ -7,10 +7,15 @@ export class CreateUSer extends UserEntity {
   id: number;
 
   @IsString()
-  name: string;
+  fullName: string;
 
   age: number;
 
   @IsString()
-  country: string;
+  city: string;
+  
+  phone: number;
+  
+  @IsString()
+  address: string;
 }
