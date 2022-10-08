@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import mongoose from 'mongoose';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -32,23 +33,23 @@ export class CommentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
+  findOne(@Param('id') id: mongoose.Schema.Types.ObjectId) {
+    return this.commentService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
+  update(@Param('id') id: mongoose.Schema.Types.ObjectId, @Body() updateCommentDto: UpdateCommentDto) {
+    return this.commentService.update(id, updateCommentDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  remove(@Param('id') id: mongoose.Schema.Types.ObjectId) {
+    return this.commentService.remove(id);
   }
 
-  // @Get('user/:id')
-  // findByUserId(@Param('id') id: string) {
-  //   return this.commentService.findByUserId(id);
-  // }
+  @Get('user/:id')
+  findByUserId(@Param('id') id: mongoose.Schema.Types.ObjectId) {
+   return this.commentService.findByUserId(id);
+  }
 }

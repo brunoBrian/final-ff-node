@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { AlreadyExistsInterceptor } from './utils/interceptors/EntityAlreadyExistsInterceptor';
 import { NotFoundInterceptor } from './utils/interceptors/EntityNotFoundInterceptor';
 
 async function bootstrap() {
@@ -18,6 +19,7 @@ async function bootstrap() {
 
   // Interceptor
   app.useGlobalInterceptors(new NotFoundInterceptor());
+  app.useGlobalInterceptors(new AlreadyExistsInterceptor());
 
   await app.listen(process.env.PORT || 8080, () => {
     console.log(`Server listen in port ${port}`);
