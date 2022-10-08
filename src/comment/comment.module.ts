@@ -6,7 +6,7 @@ import { CommentSchema } from './comment.schema';
 
 @Module({
   imports: [
-    //Cria uma tabela no BD com o nome comment e os valores do schema como colunas
+    //Cria uma tabela no BD com o nome Comment e os valores do schema como colunas
     MongooseModule.forFeature([
       {
         name: 'Comment',
