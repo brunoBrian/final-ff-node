@@ -6,7 +6,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
 import { firstValueFrom } from 'rxjs';
 import { CreateUser } from '../user/create-user';
-import { UserEntityType } from '../user/user-entity';
+import { UserEntityType } from '../user/user-entity-type';
 
 
 @Injectable()

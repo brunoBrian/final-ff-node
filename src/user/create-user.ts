@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-import { UserEntityType } from './user-entity';
+import { UserEntityType } from './user-entity-type';
 
 export class CreateUser extends UserEntityType {
   @IsString()
