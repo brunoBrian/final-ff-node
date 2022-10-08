@@ -5,8 +5,8 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
 import { firstValueFrom } from 'rxjs';
-import { CreateUSer } from '../user/create-user';
-import { UserEntity } from '../user/user-entity';
+import { CreateUser } from '../user/create-user';
+import { UserEntityType } from '../user/user-entity';
 
 
 @Injectable()
@@ -19,14 +19,14 @@ export class CommentService {
     },
   ];
 
-  private users: UserEntity[] = [
+  private users: UserEntityType[] = [
     {
       id: 1,
-      fullName: 'Josue das Caldas',
-      age: 50,
+      fullName: 'Rafael Azevedo',
+      age: 31,
       city: 'São José',
       phone: 5522999536245,
-      address: 'Rua dos Pinhais, 45'
+      address: 'Rua das Batatas, 45'
     }
   ]
 
@@ -56,7 +56,7 @@ export class CommentService {
     }
   }
 
-  async createUSer(createUser: CreateUSer){
+  async createUSer(createUser: CreateUser){
     try {
       await firstValueFrom(
         this.httpService.get(
@@ -116,17 +116,17 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 
-  findCommentsByUserId(id: number) {
+  findCommentsById(id: number) {
     const user = this.users.find((user) => user.id === id)
     if(user){
       const comment = this.comments.filter((comment) => comment.user_id === user.id);
       if (!comment) {
-        throw new EntityNotFoundError(`Comentários não encontrados para o id ${id}`);
+        throw new EntityNotFoundError(`Nenhum comentário foi encontrado para o ID: ${id}`);
       }
       return comment;
     }
     else{
-      throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+      throw new EntityNotFoundError(`Nenhum usuário foi encontrado para o ID: ${id} `);
     }
    }
 }

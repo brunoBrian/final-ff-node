@@ -49,6 +49,6 @@ export class CommentController {
 
    @Get('user/:id')
    findByUserId(@Param('id') id: number) {
-     return this.commentService.findCommentsByUserId(id);
+     return this.commentService.findCommentsById(id);
    }
 }

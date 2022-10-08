@@ -1,4 +1,4 @@
-export class UserEntity {
+export class UserEntityType {
     id: number;
     fullName: string;
     age: number;
