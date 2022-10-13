@@ -17,7 +17,10 @@
 
 ## 🛠️Ferramentas
 
+- Javascript
+- Typescript
 - NodeJs
+- Nest
 - Swagger
 
 <h3>Autor</h3>
