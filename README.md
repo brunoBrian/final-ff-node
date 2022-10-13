@@ -22,6 +22,7 @@
 - NodeJs
 - Nest
 - Swagger
+- Heroku
 
 <h3>Autor</h3>
 
