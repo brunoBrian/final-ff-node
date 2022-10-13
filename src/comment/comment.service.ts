@@ -4,6 +4,7 @@ import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
+import { UserService } from 'src/user/user.service';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -23,9 +24,13 @@ export class CommentService {
     try {
       await firstValueFrom(
         this.httpService.get(
-          `https://api.github.com/users/${createCommentDto.user_id}`,
+          `http://localhost:8080/user/${createCommentDto.user_id}`,
         ),
       );
+
+   /*   if(this.users.find((user) => user.id !== createCommentDto.id)){
+        throw new EntityNotFoundError('Usuário não existe!');
+    }*/
     
       const lastId = this.comments[this.comments.length - 1]?.id || 0;
 
@@ -38,7 +43,7 @@ export class CommentService {
 
       return newComment;
     } catch (err) {
-      throw new EntityNotFoundError('Card não encontrado');
+      throw new EntityNotFoundError('Usuário não encontrado');
     }
   }
 

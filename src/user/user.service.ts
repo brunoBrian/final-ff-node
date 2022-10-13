@@ -59,7 +59,7 @@ export class UserService {
 
     const index = this.users.indexOf(user);
 
-    if(this.users.find((user) => user.firstname === updateUserDto.firstname && user.lastname === updateUserDto.lastname && user.id !== updateUserDto.id)){
+    if(this.users.find((user) => user.firstname === updateUserDto.firstname && user.lastname === updateUserDto.lastname && user.id !== id)){
         throw new EntityNotFoundError('Já existe outro usuário cadastrado com esse nome');
     }
 
