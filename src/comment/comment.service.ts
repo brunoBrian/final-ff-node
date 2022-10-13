@@ -24,7 +24,7 @@ export class CommentService {
     try {
       await firstValueFrom(
         this.httpService.get(
-          `http://localhost:8080/user/${createCommentDto.user_id}`,
+          `https://ame-nodejs.herokuapp.com/user/${createCommentDto.user_id}`,
         ),
       );
 
