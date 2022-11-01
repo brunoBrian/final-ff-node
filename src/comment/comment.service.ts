@@ -4,6 +4,7 @@ import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentEntity } from './entities/comment.entity';
+import { UserService } from 'src/user/user.service';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -12,7 +13,7 @@ export class CommentService {
     {
       id: 1,
       comment: 'Some comment',
-      user_id: '1',
+      user_id: 1,
     },
   ];
 
@@ -23,10 +24,14 @@ export class CommentService {
     try {
       await firstValueFrom(
         this.httpService.get(
-          `https://api.github.com/users/${createCommentDto.user_id}`,
+          `https://ame-nodejs.herokuapp.com/user/${createCommentDto.user_id}`,
         ),
       );
 
+   /*   if(this.users.find((user) => user.id !== createCommentDto.id)){
+        throw new EntityNotFoundError('Usuário não existe!');
+    }*/
+    
       const lastId = this.comments[this.comments.length - 1]?.id || 0;
 
       const newComment = {
@@ -38,7 +43,7 @@ export class CommentService {
 
       return newComment;
     } catch (err) {
-      throw new EntityNotFoundError('Card não encontrado');
+      throw new EntityNotFoundError('Usuário não encontrado');
     }
   }
 
@@ -79,13 +84,13 @@ export class CommentService {
     this.comments.splice(index, 1);
   }
 
-  // findByUserId(id: string) {
-  //   const comment = this.comments.filter((comment) => comment.user_id === id);
+   findByUserId(id: number) {
+     const comment = this.comments.filter((comment) => comment.user_id === id);
 
-  //   if (!comment) {
-  //     throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
-  //   }
+   if (!comment) {
+       throw new EntityNotFoundError(`Usuário ${id} não encontrado`);
+     }
 
-  //   return comment;
-  // }
+     return comment;
+   }
 }
